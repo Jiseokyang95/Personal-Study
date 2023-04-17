@@ -3,14 +3,14 @@
 비트단위(bitwise)연산자 &를 사용하면 된다.(and, ampersand, 앰퍼센드라고 읽는다.)
 */
 
-#include <stdio.h>
+#include<stdio.h>
 
-int main()
+int main ()
 {
-      int a, b;
+int a,b;
 
-      scanf("%d", &a);
-      printf("%d\n", a && b);
+scanf("%d %d", &a, &b);
+printf("%d", a&b);
 
-      return 0;
+return 0;
 }
