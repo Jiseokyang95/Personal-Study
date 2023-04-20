@@ -30,7 +30,7 @@ int i, j;               // 반복문
 
 int main()
 {
-      int house[11][11] = {0}; // 개미굴
+      int house[11][11] = {0}; // 개미굴 지도 입력
       for (i = 0; i < 10; i++)
       {
             for (j = 0; j < 10; j++)
@@ -39,38 +39,38 @@ int main()
             }
       }
 
-      row = 1;
+      row = 1; //개미 시작 위치 
       col = 1;
 
       while (1)
       {
-            next_col = col + 1;
+            next_col = col + 1; //다음 개미 위치의 값 저장
             next_row = row + 1;
-            if (house[row][col] == 2)
+            if (house[row][col] == 2) //개미가 먹이 획득시 종료
             {
                   house[row][col] = 9;
                   break;
             }
-            else if (house[row][next_col] != 1)
+            else if (house[row][next_col] != 1) // 우측 이동
             {
                   house[row][col] = 9;
                   col++;
-                  next_row = row;
+                  next_row = row; //Row값 초기화
             }
-            else if (house[next_row][col] != 1)
+            else if (house[next_row][col] != 1) // 하단 이동
             {
                   house[row][col] = 9;
                   row++;
-                  next_col = col;
+                  next_col = col; //Col 값 초기화
             }
-            else if (house[next_row][col] == 1 && house[row][next_col] == 1)
+            else if (house[next_row][col] == 1 && house[row][next_col] == 1) //개미 이동 불가시
             {
                   house[row][col] = 9;
                   break;
             }
       }
 
-      for (i = 0; i < 10; i++)
+      for (i = 0; i < 10; i++) //개미굴 출력
       {
             for (j = 0; j < 10; j++)
             {
