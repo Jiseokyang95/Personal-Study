@@ -16,7 +16,7 @@ int main(void)
 
       scanf("%d", &a);
 
-      for(i=1; i<=a;i++)
+      for(i=0; i<=a;i++)
       {
             sum = sum+i;
             if(sum>=a)
