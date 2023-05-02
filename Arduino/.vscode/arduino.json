@@ -2,5 +2,5 @@
     "board": "arduino:avr:uno",
     "output": "build",
     "port": "COM3",
-    "sketch": "PiezoBuzzer\\PiezoBuzzer.ino"
+    "sketch": "dht_basic\\dht_basic.ino"
 }

@@ -1,79 +1,134 @@
-# 1 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\PiezoBuzzer\\PiezoBuzzer.ino"
-/*
-
-- 아두이노에서 스위치를 누르면 LED를 펄스를 이용해서 동작시키기, 
-
-  1초에 한번누르면 깜박이고, 또 누르면 0.5초에 한번 깜빡이고,
-
-  또한번 누르면 계속 켜지고, 이후에 순환되는 방식으로 한다.
-
-- 그러다가 2초간 꾸욱 누르면 꺼진다.
-
-- 스위치를 누르는 동안에도 기존 동작은 멈춰선 안된다.
-
-*/
-# 9 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\PiezoBuzzer\\PiezoBuzzer.ino"
-int i = 3;
-int led = 8;
-int interruptpin = 2;
-int interruptpin2 = 3;
-unsigned long cnt = 0;
+# 1 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino"
+int pin = 8;
+uint8_t bitmask = 0xFF;
+long levelTimeout = 500000; // 500ms
+uint8_t port = 0xFF;
 
 void setup()
 {
-    pinMode(led, 0x1);
-    pinMode(interruptpin, 0x2);
-    Serial.begin(115200);
-    attachInterrupt(((interruptpin) == 2 ? 0 : ((interruptpin) == 3 ? 1 : -1)), interrupt, 2);
-    attachInterrupt(((interruptpin2) == 2 ? 0 : ((interruptpin2) == 3 ? 1 : -1)), interrupt2, 3);
+      Serial.begin(115200);
 }
 
 void loop()
 {
-    if (i % 3 == 0)
-        second();
-    else if (i % 3 == 1)
-        halfsecond();
-    else if (i % 3 == 2)
-        full();
-}
-void second() //1초마다 깜빡
-{
-    digitalWrite(led, 0x1);
-    delay(1000);
-    digitalWrite(led, 0x0);
-    delay(1000);
-}
-void halfsecond() //0.1초마다 깜빡
-{
-    digitalWrite(led, 0x1);
-    delay(100);
-    digitalWrite(led, 0x0);
-    delay(100);
-}
-void full() //켜져있는 상태
-{
-    digitalWrite(led, 0x1);
-    delay(1000);
-    digitalWrite(led, 0x0);
-    delay(1);
+      byte temperature = 0;
+      byte humidity = 0;
+
+      read(&temperature, &humidity);
+      Serial.println(temperature);
+      Serial.println(humidity);
+      delay(1000);
 }
 
-void interrupt() //누르는 순간
+int read(byte *temperature, byte *humidity)
 {
-    if(millis()-cnt > 150)
-    {
-        i++;
-        Serial.println(i);
-        Serial.println(cnt);
-    }
-    cnt = millis();
+      ( 
+# 24 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino" 3
+     (__extension__({ uint16_t __addr16 = (uint16_t)((uint16_t)(
+# 24 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino"
+     digital_pin_to_bit_mask_PGM + (pin)
+# 24 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino" 3
+     )); uint8_t __result; __asm__ __volatile__ ( "lpm %0, Z" "\n\t" : "=r" (__result) : "z" (__addr16) ); __result; })) 
+# 24 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino"
+     );
+      ( 
+# 25 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino" 3
+     (__extension__({ uint16_t __addr16 = (uint16_t)((uint16_t)(
+# 25 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino"
+     digital_pin_to_port_PGM + (pin)
+# 25 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino" 3
+     )); uint8_t __result; __asm__ __volatile__ ( "lpm %0, Z" "\n\t" : "=r" (__result) : "z" (__addr16) ); __result; })) 
+# 25 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino"
+     );
+      byte data[40] = {0};
+      sample(data);
+      // 받은 data 처리
+
+      for (size_t i = 0; i < 40; i++)
+      {
+            Serial.println(data[i]);
+      }
+
+      *temperature = 0;
+      *humidity = 0;
 }
-void interrupt2() //떼는 순간
+
+int sample(byte data[40])
 {
-    if(millis()-cnt > 2000)
-    {
-        digitalWrite(led, 0x0);
-    delay(100000000000);
-    }
+      // memset(data, 0, 40);
+      pinMode(pin, 0x1);
+      digitalWrite(pin, 0x0);
+      delay(18 + 2);
+      //
+      digitalWrite(pin, 0x1);
+      pinMode(pin, 0x0);
+      delayMicroseconds(25);
+
+      long t = levelTime(0x0, 10, 6);
+      if (t < 40)
+      {
+            return -1;
+      }
+
+      t = levelTime(0x1, 10, 6);
+      if (t < 40)
+      {
+            return -1;
+      }
+
+      for (size_t i = 0; i < 40; i++)
+      {
+            t = levelTime(0x0, 10, 6);
+            if (t < 24)
+            {
+            }
+            t = levelTime(0x0, 10, 6);
+            if (t < 11)
+            {
+            }
+            data[i] = (t>40 ? 1:0);
+      }
+}
+
+int levelTime(byte level, int firstwait, int interval)
+{
+      unsigned long time_start = micros();
+      long time = 0;
+
+      uint8_t portState = level ? bitmask : 0;
+
+      bool loop = true;
+      for (int i = 0; loop; i++)
+      {
+            if (time < 0 || time > levelTimeout)
+            {
+                  return -1;
+            }
+            if (i == 0)
+            {
+                  if (firstwait > 0)
+                  {
+                        delayMicroseconds(firstwait);
+                  }
+            }
+
+            else if (interval > 0)
+            {
+                  delayMicroseconds(interval);
+            }
+            time = micros() - time_start;
+
+            // LOW 상태에서 HIGH 상태로 변할때 빠져나가는 것
+            loop = ((*( (volatile uint8_t *)( 
+# 105 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino" 3
+                     (__extension__({ uint16_t __addr16 = (uint16_t)((uint16_t)(
+# 105 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino"
+                     port_to_input_PGM + (port)
+# 105 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino" 3
+                     )); uint16_t __result; __asm__ __volatile__ ( "lpm %A0, Z+" "\n\t" "lpm %B0, Z" "\n\t" : "=r" (__result), "=z" (__addr16) : "1" (__addr16) ); __result; }))
+# 105 "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\dht_basic\\dht_basic.ino"
+                     ) ) & bitmask) == portState);
+      }
+
+      return time;
 }

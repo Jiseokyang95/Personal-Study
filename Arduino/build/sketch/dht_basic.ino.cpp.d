@@ -1,5 +1,5 @@
-C:\Users\wltjr\source\repos\Personal-Study\Arduino\build\sketch\PiezoBuzzer.ino.cpp.o: \
- C:\Users\wltjr\source\repos\Personal-Study\Arduino\build\sketch\PiezoBuzzer.ino.cpp \
+C:\Users\wltjr\source\repos\Personal-Study\Arduino\build\sketch\dht_basic.ino.cpp.o: \
+ C:\Users\wltjr\source\repos\Personal-Study\Arduino\build\sketch\dht_basic.ino.cpp \
  C:\Users\wltjr\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h \
  C:\Users\wltjr\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/binary.h \
  C:\Users\wltjr\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/WCharacter.h \

@@ -10,7 +10,7 @@
     "Includepath": "C:\\Users\\wltjr\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard"
   },
   {
-    "Sourcefile": "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\build\\sketch\\PiezoBuzzer.ino.cpp",
+    "Sourcefile": "C:\\Users\\wltjr\\source\\repos\\Personal-Study\\Arduino\\build\\sketch\\dht_basic.ino.cpp",
     "Include": "",
     "Includepath": null
   }
