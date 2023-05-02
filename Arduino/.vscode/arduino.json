@@ -1,6 +1,0 @@
-{
-    "board": "arduino:avr:uno",
-    "output": "build",
-    "port": "COM3",
-    "sketch": "dht_basic\\dht_basic.ino"
-}
