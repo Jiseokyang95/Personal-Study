@@ -1,5 +1,0 @@
-{
-    "sketch": "dallas\\dallas_Basic.ino",
-    "board": "arduino:avr:uno",
-    "port": "COM3"
-}
